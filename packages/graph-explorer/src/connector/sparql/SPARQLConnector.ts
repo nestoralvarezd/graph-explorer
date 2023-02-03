@@ -66,17 +66,12 @@ export default class SPARQLConnector extends AbstractConnector {
 
   private _sparqlFetch<TResult>(options?: QueryOptions) {
     return async (queryTemplate: string) => {
-      const url = this._config.connection.url.replace(/\/$/, "");
       const encodedQuery = encodeURIComponent(queryTemplate);
-
-      const uri = `${url}/sparql?query=${encodedQuery}`;
-
-      const res = await fetch(uri + "&format=json", {
+      const res = await fetch(`/api?format=json&query=${encodedQuery}`, {
         signal: options?.abortSignal,
         headers: super.headers,
       });
-
-      return res.json() as TResult;
+      return (await res.json()) as TResult;
     };
   }
 }

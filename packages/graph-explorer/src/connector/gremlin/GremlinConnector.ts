@@ -42,16 +42,11 @@ export default class GremlinConnector extends AbstractConnector {
 
   private _gremlinFetch<TResult>(options?: QueryOptions) {
     return async (queryTemplate: string) => {
-      const url = this._config.connection.url.replace(/\/$/, "");
       const encodedQuery = encodeURIComponent(queryTemplate);
-
-      const uri = `${url}/?gremlin=${encodedQuery}`;
-
-      const res = await fetch(uri, {
+      const res = await fetch(`/api?query=${encodedQuery}`, {
         signal: options?.abortSignal,
         headers: super.headers,
       });
-
       return (await res.json()) as TResult;
     };
   }

@@ -228,6 +228,7 @@ export abstract class AbstractConnector {
 
   protected get headers() {
     const headers: HeadersInit = {};
+    headers["graph-db-connection-engine"] = this._config.connection.queryEngine ?? "gremlin";
     if (this._config.connection?.proxyConnection) {
       headers["graph-db-connection-url"] =
         this._config.connection?.graphDbUrl || "";
